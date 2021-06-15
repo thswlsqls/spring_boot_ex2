@@ -1,0 +1,29 @@
+package com.care.root.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@RefreshScope
+@RestController
+public class Client01Controller {
+	@Value("${server.port}")
+	String port;
+	@Value("${test.name}")
+	String name;
+	@RequestMapping("/")
+	public String index() { //깃허브에 설정한 값을 가져온다
+		return "깃허브에서 가져온 값 : "+port+":"+name;
+	}//client서버가 server에게 요청하면, 깃허브에서 설정 값을 요청하여 받아온다
+	//단, 한번만 받아온다. 다시 말해서, 깃허브내용이 변경될 때, 이를 감지하지 못한다.
+	@RequestMapping("refresh")
+	public void refresh() {
+		WebClient webClient = WebClient.create();
+		String configServerURL = "http://localhost:9000/actuator/refresh";
+		webClient.post().uri(configServerURL).retrieve()
+					.bodyToMono(Object.class).subscribe();
+	}
+}
+

@@ -1,0 +1,13 @@
+package com.care.root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@RestController
+public class Client01Controller {
+	String eurekaURL = "http://EUREKACLIENT01-TEST/getmessage";
+	@Autowired WebClient.Builder webClient;
+	@GetMapping("/")
+}

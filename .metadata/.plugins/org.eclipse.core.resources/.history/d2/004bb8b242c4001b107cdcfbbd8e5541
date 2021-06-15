@@ -1,0 +1,18 @@
+package com.care.root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@RestController
+public class Client01Controller {
+	String eurekaURL = "http://EUREKACLIENT01-TEST/getmessage";
+	@Autowired WebClient.Builder webClient;
+	@GetMapping("/")
+	public String eurekaClient() {
+		String s = webClient.build().get().uri(eurekaURL)
+				.retrieve().bodyToMono(String.class).block(); //비동기 처리시, subscribe()메서드를 사용하면, 기다리지 않고 처리한다
+		return s; //리턴값을 String.class로 하였다
+	}
+}

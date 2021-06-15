@@ -1,0 +1,4 @@
+
+spring.profiles.active = peer1
+spring.application.name=eurekaclient02-test
+spring.cloud.config.uri=http://localhost:8888 
